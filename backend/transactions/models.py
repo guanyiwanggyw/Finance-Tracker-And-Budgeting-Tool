@@ -6,8 +6,20 @@ class Transaction(models.Model):
     type = models.CharField(max_length=8) 
     amount = models.DecimalField(max_digits=11, decimal_places=2)
     category = models.CharField(max_length=20) 
-    sent_from = models.CharField(max_length=20)
-    sent_to = models.CharField(max_length=20)
+    from_account = models.ForeignKey(
+        "accounts.Account",
+        on_delete=models.PROTECT,
+        related_name="outgoing_transactions",
+        null=True,
+        blank=True,
+    )
+    to_account = models.ForeignKey(
+        "accounts.Account",
+        on_delete=models.PROTECT,
+        related_name="incoming_transactions",
+        null=True,
+        blank=True,
+    )
     note = models.CharField(max_length=100)
     account_holder =  models.ForeignKey(
         User,
@@ -17,4 +29,5 @@ class Transaction(models.Model):
 
     class Meta:
         db_table = "api_transaction"
+        
 

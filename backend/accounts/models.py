@@ -1,8 +1,12 @@
 from django.db import models
+from django.db.models import Sum
 from django.contrib.auth.models import User
 
 class Account(models.Model):
+    ACCOUNT_TYPES = [("Internal","Internal"), 
+                     ("External", "External"),]
     account_name = models.CharField(max_length=100)
+    account_type = models.CharField(max_length=10, choices=ACCOUNT_TYPES, default="Internal")
     opening_balance = models.DecimalField(max_digits=11, decimal_places=2)
     opening_date = models.DateField()
     account_holder = models.ForeignKey(
@@ -11,6 +15,18 @@ class Account(models.Model):
         related_name="accounts" 
     )
 
+    @property
+    def current_balance(self):
+        incoming = self.incoming_transactions.aggregate(
+            total=Sum("amount")
+        )["total"] or 0
+
+        outgoing = self.outgoing_transactions.aggregate(
+            total=Sum("amount")
+        )["total"] or 0
+
+        return self.opening_balance + incoming - outgoing
+    
     class Meta:
         db_table = "api_account"
         constraints = [

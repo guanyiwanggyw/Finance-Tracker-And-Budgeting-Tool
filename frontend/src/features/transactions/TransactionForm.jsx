@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import Transaction from "./Transaction";
+import Account from "../accounts/Account";
 import "../../styles/Form.css";
 
 function TransactionForm() {
@@ -10,15 +11,45 @@ function TransactionForm() {
   const [type, setType] = useState("");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
-  const [sent_from, setSentFrom] = useState("");
-  const [sent_to, setSentTo] = useState("");
+  const [from_account, setFromAccount] = useState("");
+  const [to_account, setToAccount] = useState("");
   const [note, setNote] = useState("");
+  const [accounts, setAccounts] = useState([]);
   const navigate = useNavigate();
+  const payload = {
+    date,
+    type,
+    amount,
+    category,
+    note,
+  };
+
+  if (type === "Expense") {
+    payload.from_account = from_account;
+    payload.to_account_name = to_account;
+  }
+
+  if (type === "Income") {
+    payload.from_account_name = from_account;
+    payload.to_account = to_account;
+  }
+
+  if (type === "Transfer") {
+    payload.from_account = from_account;
+    payload.to_account = to_account;
+  }
 
   useEffect(() => {
     getTransactions();
+    getAccounts();
   }, []);
 
+  const getAccounts = () => {
+    api
+      .get("/api/accounts/")
+      .then((res) => setAccounts(res.data))
+      .catch((err) => alert(err));
+  };
   const getTransactions = () => {
     api
       .get("/api/transactions/")
@@ -43,23 +74,15 @@ function TransactionForm() {
   const createTransaction = (e) => {
     e.preventDefault();
     api
-      .post("/api/transactions/", {
-        date,
-        type,
-        amount,
-        category,
-        sent_from,
-        sent_to,
-        note,
-      })
+      .post("/api/transactions/", payload)
       .then((res) => {
         if (res.status === 201) {
           setDate("");
           setType("");
           setAmount("");
           setCategory("");
-          setSentFrom("");
-          setSentTo("");
+          setFromAccount("");
+          setToAccount("");
           setNote("");
         } else alert("Failed to add account");
         getTransactions();
@@ -102,12 +125,11 @@ function TransactionForm() {
           onChange={(e) => setType(e.target.value)}
         >
           <option value="">Select a type</option>
-          <option value="income">Income</option>
-          <option value="expense">Expense</option>
-          <option value="transfer">Transfer</option>
+          <option value="Income">Income</option>
+          <option value="Expense">Expense</option>
+          <option value="Transfer">Transfer</option>
         </select>
         <br />
-
         <label htmlFor="amount">Amount:</label>
         <br />
         <input
@@ -119,7 +141,6 @@ function TransactionForm() {
           onChange={(e) => setAmount(e.target.value)}
           value={amount}
         />
-
         <label htmlFor="category">Category:</label>
         <br />
         <input
@@ -129,26 +150,62 @@ function TransactionForm() {
           onChange={(e) => setCategory(e.target.value)}
           value={category}
         />
-
-        <label htmlFor="sent_from">Sent from:</label>
+        <label htmlFor="from_account">Sent from:</label>
         <br />
-        <input
-          type="text"
-          id="sent_from"
-          required
-          onChange={(e) => setSentFrom(e.target.value)}
-          value={sent_from}
-        />
 
-        <label htmlFor="sent_to">Sent to:</label>
+        {type === "Expense" || type === "Transfer" ? (
+          <select
+            className="form-select"
+            id="from_account"
+            required
+            value={from_account}
+            onChange={(e) => setFromAccount(e.target.value)}
+          >
+            <option value="">Select an account</option>
+
+            {accounts.map((account) => (
+              <option key={account.id} value={account.id}>
+                {account.account_name}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <input
+            type="text"
+            id="from_account"
+            required
+            onChange={(e) => setFromAccount(e.target.value)}
+            value={from_account}
+          />
+        )}
+
+        <label htmlFor="to_account">Sent to:</label>
         <br />
-        <input
-          type="text"
-          id="sent_to"
-          required
-          onChange={(e) => setSentTo(e.target.value)}
-          value={sent_to}
-        />
+        {type === "Income" || type === "Transfer" ? (
+          <select
+            className="form-select"
+            id="to_account"
+            required
+            onChange={(e) => setToAccount(e.target.value)}
+            value={to_account}
+          >
+            <option value="">Select an account</option>
+
+            {accounts.map((account) => (
+              <option key={account.id} value={account.id}>
+                {account.account_name}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <input
+            type="text"
+            id="to_account"
+            required
+            onChange={(e) => setToAccount(e.target.value)}
+            value={to_account}
+          />
+        )}
 
         <label htmlFor="note">Note:</label>
         <br />

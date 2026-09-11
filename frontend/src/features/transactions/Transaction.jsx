@@ -8,8 +8,8 @@ function Transaction({ transaction, onDelete }) {
       <p className="account-balance">{transaction.type}</p>
       <p className="account-balance">£{transaction.amount}</p>
       <p className="account-balance">Category: {transaction.category}</p>
-      <p className="account-balance">From: {transaction.sent_from}</p>
-      <p className="account-balance">To: {transaction.sent_to}</p>
+      <p className="account-balance">From: {transaction.from_account}</p>
+      <p className="account-balance">To: {transaction.to_account}</p>
       <p className="account-balance">Note: {transaction.note}</p>
 
       <button
