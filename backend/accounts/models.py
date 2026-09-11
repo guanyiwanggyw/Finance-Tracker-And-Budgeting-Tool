@@ -2,8 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Account(models.Model):
-    name = models.CharField(max_length=100)
-    balance = models.DecimalField(max_digits=11, decimal_places=2)
+    account_name = models.CharField(max_length=100)
+    opening_balance = models.DecimalField(max_digits=11, decimal_places=2)
+    opening_date = models.DateField()
     account_holder = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -11,12 +12,12 @@ class Account(models.Model):
     )
 
     class Meta:
-            db_table = "api_account"
-            constraints = [
+        db_table = "api_account"
+        constraints = [
             models.UniqueConstraint(
-                fields=["name", "account_holder"],
+                fields=["account_name", "account_holder"],
                 name="unique_account_name_per_holder"
-            )
+                )
         ]
     def __str__(self):
-        return self.name
+        return self.account_name

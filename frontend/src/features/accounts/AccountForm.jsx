@@ -6,8 +6,9 @@ import "../../styles/Form.css";
 
 function AccountForm({ route, method }) {
   const [accounts, setAccounts] = useState([]);
-  const [balance, setBalance] = useState("");
-  const [name, setName] = useState("");
+  const [opening_balance, setOpeningBalance] = useState("");
+  const [opening_date, setOpeningDate] = useState("");
+  const [account_name, setAccountName] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,11 +39,12 @@ function AccountForm({ route, method }) {
   const createAccount = (e) => {
     e.preventDefault();
     api
-      .post("/api/accounts/", { balance, name })
+      .post("/api/accounts/", { account_name, opening_balance, opening_date })
       .then((res) => {
         if (res.status === 201) {
-          setName("");
-          setBalance("");
+          setAccountName("");
+          setOpeningBalance("");
+          setOpeningDate("");
         } else alert("Failed to add account");
         getAccounts();
       })
@@ -64,26 +66,35 @@ function AccountForm({ route, method }) {
 
       <h2>Add an account</h2>
       <form onSubmit={createAccount}>
-        <label htmlFor="name">Name:</label>
+        <label htmlFor="account-name">Account Name:</label>
         <br />
         <input
           type="text"
-          id="name"
+          id="account-name"
           required
-          onChange={(e) => setName(e.target.value)}
-          value={name}
+          onChange={(e) => setAccountName(e.target.value)}
+          value={account_name}
         />
-        <label htmlFor="balance">Balance:</label>
+        <label htmlFor="account-opening-balance">Opening Balance:</label>
         <br />
         <input
           type="text"
           inputMode="numeric"
           pattern="^\d*(\.\d{0,2})?$"
-          id="balance"
+          id="opening-balance"
           step="0.01"
           required
-          onChange={(e) => setBalance(e.target.value)}
-          value={balance}
+          onChange={(e) => setOpeningBalance(e.target.value)}
+          value={opening_balance}
+        />
+        <label htmlFor="account-opening-date">Opening Date:</label>
+        <br />
+        <input
+          type="date"
+          id="opening-date"
+          required
+          onChange={(e) => setOpeningDate(e.target.value)}
+          value={opening_date}
         />
         <input type="submit" value="Submit"></input>
       </form>
