@@ -3,6 +3,8 @@ from django.db.models import Sum
 from django.contrib.auth.models import User
 
 class Account(models.Model):
+    # Internal accounts refers to accounts the user has control over such as bank accounts and cash
+    # External accounts refers to sources outwith the users control such as a store or workplace
     ACCOUNT_TYPES = [("Internal","Internal"), 
                      ("External", "External"),]
     account_name = models.CharField(max_length=100)
