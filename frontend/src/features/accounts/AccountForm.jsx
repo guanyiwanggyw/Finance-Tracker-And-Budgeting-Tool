@@ -4,7 +4,7 @@ import api from "../../services/api";
 import Account from "./Account";
 import "../../styles/Form.css";
 
-function AccountForm({ route, method }) {
+function AccountForm({ accountsVersion, onAccountsChanged }) {
   const [accounts, setAccounts] = useState([]);
   const [opening_balance, setOpeningBalance] = useState("");
   const [opening_date, setOpeningDate] = useState("");
@@ -13,7 +13,7 @@ function AccountForm({ route, method }) {
 
   useEffect(() => {
     getAccounts();
-  }, []);
+  }, [accountsVersion]);
 
   const getAccounts = () => {
     api
@@ -32,6 +32,7 @@ function AccountForm({ route, method }) {
         if (res.status === 204) alert("Account was deleted");
         else alert("Failed to delete account!");
         getAccounts();
+        if (res.status === 204) onAccountsChanged?.();
       })
       .catch((err) => alert(err));
   };
@@ -45,23 +46,26 @@ function AccountForm({ route, method }) {
           setAccountName("");
           setOpeningBalance("");
           setOpeningDate("");
+          onAccountsChanged?.();
         } else alert("Failed to add account");
         getAccounts();
       })
       .catch((err) => alert(err));
   };
 
+  const getInternalAccounts = (accounts) => {
+    return accounts
+      .filter((account) => account.account_type === "Internal")
+      .map((account) => (
+        <Account account={account} onDelete={deleteAccount} key={account.id} />
+      ));
+  };
+
   return (
     <div>
       <div>
         <h2>Accounts</h2>
-        {accounts.map((account) => (
-          <Account
-            account={account}
-            onDelete={deleteAccount}
-            key={account.id}
-          />
-        ))}
+        {getInternalAccounts(accounts)}
       </div>
 
       <h2>Add an account</h2>

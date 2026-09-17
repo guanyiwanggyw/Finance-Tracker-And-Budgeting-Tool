@@ -9,10 +9,25 @@ import TransactionForm from "../features/transactions/TransactionForm";
 import "../styles/Home.css";
 
 function Home() {
+  const [accountsVersion, setAccountsVersion] = useState(0);
+  const [transactionsVersion, setTransactionsVersion] = useState(0);
+
+  const handleVersionChanged = () => {
+    setAccountsVersion((version) => version + 1);
+    setTransactionsVersion((version) => version + 1);
+  };
+
   return (
     <div>
-      <AccountForm />
-      <TransactionForm />
+      <AccountForm
+        accountsVersion={accountsVersion}
+        onAccountsChanged={handleVersionChanged}
+      />
+      <TransactionForm
+        accountsVersion={accountsVersion}
+        transactionsVersion={transactionsVersion}
+        onTransactionsChanged={handleVersionChanged}
+      />
       <LogoutButton />
     </div>
   );

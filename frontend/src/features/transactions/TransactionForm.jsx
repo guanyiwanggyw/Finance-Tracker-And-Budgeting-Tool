@@ -5,7 +5,21 @@ import Transaction from "./Transaction";
 import Account from "../accounts/Account";
 import "../../styles/Form.css";
 
-function TransactionForm() {
+const getErrorMessage = (error) => {
+  const data = error.response?.data;
+
+  if (!data) return "Request failed. Please try again.";
+  if (typeof data === "string") return data;
+  if (data.detail) return data.detail;
+
+  return Object.values(data).flat().join(" ");
+};
+
+function TransactionForm({
+  accountsVersion,
+  transactionsVersion,
+  onTransactionsChanged,
+}) {
   const [transactions, setTransactions] = useState([]);
   const [date, setDate] = useState("");
   const [type, setType] = useState("");
@@ -24,6 +38,7 @@ function TransactionForm() {
     note,
   };
 
+  // The API uses account IDs for internal accounts and names for external parties.
   if (type === "Expense") {
     payload.from_account = from_account;
     payload.to_account_name = to_account;
@@ -39,17 +54,19 @@ function TransactionForm() {
     payload.to_account = to_account;
   }
 
+  // Refresh both lists because transactions affect account balances.
   useEffect(() => {
-    getTransactions();
     getAccounts();
-  }, []);
+    getTransactions();
+  }, [accountsVersion, transactionsVersion]);
 
   const getAccounts = () => {
     api
       .get("/api/accounts/")
       .then((res) => setAccounts(res.data))
-      .catch((err) => alert(err));
+      .catch((err) => alert(getErrorMessage(err)));
   };
+
   const getTransactions = () => {
     api
       .get("/api/transactions/")
@@ -57,7 +74,7 @@ function TransactionForm() {
       .then((data) => {
         (setTransactions(data), console.log(data));
       })
-      .catch((err) => alert(err));
+      .catch((err) => alert(getErrorMessage(err)));
   };
 
   const deleteTransaction = (id) => {
@@ -67,8 +84,9 @@ function TransactionForm() {
         if (res.status === 204) alert("Transaction was deleted");
         else alert("Failed to delete transaction!");
         getTransactions();
+        if (res.status === 204) onTransactionsChanged?.();
       })
-      .catch((err) => alert(err));
+      .catch((err) => alert(getErrorMessage(err)));
   };
 
   const createTransaction = (e) => {
@@ -84,10 +102,21 @@ function TransactionForm() {
           setFromAccount("");
           setToAccount("");
           setNote("");
+          onTransactionsChanged?.();
         } else alert("Failed to add account");
         getTransactions();
       })
-      .catch((err) => alert(err));
+      .catch((err) => alert(getErrorMessage(err)));
+  };
+
+  const getAccountOptions = (accounts, type) => {
+    return accounts
+      .filter((account) => account.account_type === type)
+      .map((account) => (
+        <option key={account.id} value={account.id}>
+          {account.account_name}
+        </option>
+      ));
   };
 
   return (
@@ -162,12 +191,7 @@ function TransactionForm() {
             onChange={(e) => setFromAccount(e.target.value)}
           >
             <option value="">Select an account</option>
-
-            {accounts.map((account) => (
-              <option key={account.id} value={account.id}>
-                {account.account_name}
-              </option>
-            ))}
+            {getAccountOptions(accounts, "Internal")}
           </select>
         ) : (
           <input
@@ -190,17 +214,13 @@ function TransactionForm() {
             value={to_account}
           >
             <option value="">Select an account</option>
-
-            {accounts.map((account) => (
-              <option key={account.id} value={account.id}>
-                {account.account_name}
-              </option>
-            ))}
+            {getAccountOptions(accounts, "Internal")}
           </select>
         ) : (
           <input
             type="text"
             id="to_account"
+            list="external-accounts"
             required
             onChange={(e) => setToAccount(e.target.value)}
             value={to_account}
