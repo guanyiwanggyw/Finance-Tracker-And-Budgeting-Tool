@@ -3,15 +3,13 @@ from rest_framework import serializers
 from accounts.models import Account
 from .models import Transaction
 
-
 class TransactionSerializer(serializers.ModelSerializer):
+    # Names are accepted for external parties without adding name fields to Transaction.
     from_account_name = serializers.CharField(
-        write_only=True,
         required=False,
         allow_blank=True,
     )
     to_account_name = serializers.CharField(
-        write_only=True,
         required=False,
         allow_blank=True,
     )
@@ -37,7 +35,26 @@ class TransactionSerializer(serializers.ModelSerializer):
             "to_account": {"required": False},
         }
 
+    def to_representation(self, instance):
+        """Expose account names alongside their foreign-key IDs in API responses."""
+        data = super().to_representation(instance)
+
+        data["from_account_name"] = (
+            instance.from_account.account_name
+            if instance.from_account
+            else None
+        )
+
+        data["to_account_name"] = (
+            instance.to_account.account_name
+            if instance.to_account
+            else None
+        )
+
+        return data
+
     def validate(self, attrs):
+        """Apply transaction-specific account rules before creating the record."""
         transaction_type = attrs.get("type", "").lower()
         from_account = attrs.get("from_account")
         to_account = attrs.get("to_account")
@@ -64,6 +81,11 @@ class TransactionSerializer(serializers.ModelSerializer):
             if not to_account:
                 raise serializers.ValidationError(
                     {"to_account": "Select an account."}
+                )
+
+            if to_account.account_type != "Internal":
+                raise serializers.ValidationError(
+                    {"to_account": "Income must go to an internal account."}
                 )
 
             if not from_account and not from_account_name:
@@ -97,6 +119,7 @@ class TransactionSerializer(serializers.ModelSerializer):
 
         transaction_type = validated_data["type"].lower()
 
+        # Typed external parties become Account records so all transactions use relationships.
         if transaction_type == "expense" and to_account_name:
             validated_data["to_account"] = self.get_or_create_external_account(
                 to_account_name,
