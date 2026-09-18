@@ -20,7 +20,7 @@ class Transaction(models.Model):
         null=True,
         blank=True,
     )
-    note = models.CharField(max_length=100)
+    note = models.CharField(max_length=100, blank=True, default="")
     account_holder =  models.ForeignKey(
         User,
         on_delete=models.CASCADE,

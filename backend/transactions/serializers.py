@@ -33,6 +33,7 @@ class TransactionSerializer(serializers.ModelSerializer):
             "account_holder": {"read_only": True},
             "from_account": {"required": False},
             "to_account": {"required": False},
+            "note": {"required": False, "allow_blank": True},
         }
 
     def to_representation(self, instance):
