@@ -232,7 +232,6 @@ function TransactionForm({
         <textarea
           type="text"
           id="note"
-          required
           onChange={(e) => setNote(e.target.value)}
           value={note}
         />
