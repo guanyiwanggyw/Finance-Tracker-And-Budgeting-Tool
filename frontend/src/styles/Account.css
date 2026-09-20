@@ -6,6 +6,10 @@
   max-width: 500px;
 }
 
+.account-container:hover {
+  border: 1px solid #fc0404;
+}
+
 .account-name {
   color: #333;
 }

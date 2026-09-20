@@ -4,10 +4,11 @@ import { clearAuthTokens } from "../services/auth";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Home from "../pages/Home";
-import Account from "../pages/Account";
-import Transaction from "../pages/Transaction";
+import Account from "../pages/Accounts";
+import Transaction from "../pages/Transactions";
 import NotFound from "../pages/NotFound";
 import ProtectedRoute from "../components/ProtectedRoute";
+import AccountDetails from "../features/accounts/AccountDetails";
 
 function Logout() {
   clearAuthTokens();
@@ -36,7 +37,7 @@ export default function App() {
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<RegisterAndLogout />} />
         <Route
-          path="/account"
+          path="/accounts"
           element={
             <ProtectedRoute>
               <Account />
@@ -44,13 +45,14 @@ export default function App() {
           }
         />
         <Route
-          path="/transaction"
+          path="/transactions"
           element={
             <ProtectedRoute>
               <Transaction />
             </ProtectedRoute>
           }
         />
+        <Route path="/accounts/:id" element={<AccountDetails />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import Account from "./Account";
 import "../../styles/Form.css";
+import { Link } from "react-router-dom";
 
-function AccountForm({ accountsVersion, onAccountsChanged }) {
+function AccountForm({}) {
   const [accounts, setAccounts] = useState([]);
   const [opening_balance, setOpeningBalance] = useState("");
   const [opening_date, setOpeningDate] = useState("");
@@ -13,7 +14,7 @@ function AccountForm({ accountsVersion, onAccountsChanged }) {
 
   useEffect(() => {
     getAccounts();
-  }, [accountsVersion]);
+  }, []);
 
   const getAccounts = () => {
     api
@@ -32,7 +33,7 @@ function AccountForm({ accountsVersion, onAccountsChanged }) {
         if (res.status === 204) alert("Account was deleted");
         else alert("Failed to delete account!");
         getAccounts();
-        if (res.status === 204) onAccountsChanged?.();
+        if (res.status === 204);
       })
       .catch((err) => alert(err));
   };
@@ -46,7 +47,6 @@ function AccountForm({ accountsVersion, onAccountsChanged }) {
           setAccountName("");
           setOpeningBalance("");
           setOpeningDate("");
-          onAccountsChanged?.();
         } else alert("Failed to add account");
         getAccounts();
       })
@@ -57,16 +57,19 @@ function AccountForm({ accountsVersion, onAccountsChanged }) {
     return accounts
       .filter((account) => account.account_type === "Internal")
       .map((account) => (
-        <Account account={account} onDelete={deleteAccount} key={account.id} />
+        <Link to={`/accounts/${account.id}`}>
+          <Account
+            account={account}
+            onDelete={deleteAccount}
+            key={account.id}
+          />
+        </Link>
       ));
   };
 
   return (
-    <div class="account-container">
-      <div>
-        <h2>Accounts</h2>
-        {getInternalAccounts(accounts)}
-      </div>
+    <div>
+      {getInternalAccounts(accounts)}
       <br />
       <div>
         <h2>Add an account</h2>

@@ -32,4 +32,11 @@ class AccountDelete(generics.DestroyAPIView):
         """
         user = self.request.user
         return Account.objects.filter(account_holder=user)
-    
+
+class AccountDetail(generics.RetrieveAPIView):
+    serializer_class = AccountSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Account.objects.filter(account_holder=user)
