@@ -62,46 +62,48 @@ function AccountForm({ accountsVersion, onAccountsChanged }) {
   };
 
   return (
-    <div>
+    <div class="account-container">
       <div>
         <h2>Accounts</h2>
         {getInternalAccounts(accounts)}
       </div>
-
-      <h2>Add an account</h2>
-      <form onSubmit={createAccount}>
-        <label htmlFor="account-name">Account Name:</label>
-        <br />
-        <input
-          type="text"
-          id="account-name"
-          required
-          onChange={(e) => setAccountName(e.target.value)}
-          value={account_name}
-        />
-        <label htmlFor="account-opening-balance">Opening Balance:</label>
-        <br />
-        <input
-          type="text"
-          inputMode="numeric"
-          pattern="^\d*(\.\d{0,2})?$"
-          id="opening-balance"
-          step="0.01"
-          required
-          onChange={(e) => setOpeningBalance(e.target.value)}
-          value={opening_balance}
-        />
-        <label htmlFor="account-opening-date">Opening Date:</label>
-        <br />
-        <input
-          type="date"
-          id="opening-date"
-          required
-          onChange={(e) => setOpeningDate(e.target.value)}
-          value={opening_date}
-        />
-        <input type="submit" value="Submit"></input>
-      </form>
+      <br />
+      <div>
+        <h2>Add an account</h2>
+        <form onSubmit={createAccount}>
+          <label htmlFor="account-name">Account Name:</label>
+          <br />
+          <input
+            type="text"
+            id="account-name"
+            required
+            onChange={(e) => setAccountName(e.target.value)}
+            value={account_name}
+          />
+          <label htmlFor="account-opening-balance">Opening Balance:</label>
+          <br />
+          <input
+            type="text"
+            inputMode="numeric"
+            pattern="^\d*(\.\d{0,2})?$"
+            id="opening-balance"
+            step="0.01"
+            required
+            onChange={(e) => setOpeningBalance(e.target.value)}
+            value={opening_balance}
+          />
+          <label htmlFor="account-opening-date">Opening Date:</label>
+          <br />
+          <input
+            type="date"
+            id="opening-date"
+            required
+            onChange={(e) => setOpeningDate(e.target.value)}
+            value={opening_date}
+          />
+          <input type="submit" value="Submit"></input>
+        </form>
+      </div>
     </div>
   );
 }

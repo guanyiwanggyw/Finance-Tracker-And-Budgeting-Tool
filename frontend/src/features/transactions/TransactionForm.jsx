@@ -120,7 +120,7 @@ function TransactionForm({
   };
 
   return (
-    <div>
+    <div class="account-container">
       <div>
         <h2>Transactions</h2>
         {transactions.map((transaction) => (
@@ -131,7 +131,7 @@ function TransactionForm({
           />
         ))}
       </div>
-
+      <br />
       <h2>Add a transaction</h2>
       <form onSubmit={createTransaction}>
         <label htmlFor="date">Date:</label>

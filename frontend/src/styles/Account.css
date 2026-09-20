@@ -3,6 +3,7 @@
   margin: 20px 0;
   border: 1px solid #ccc;
   border-radius: 5px;
+  max-width: 500px;
 }
 
 .account-name {

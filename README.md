@@ -2,7 +2,7 @@
 
 A full-stack budgeting application built with Django REST Framework on the backend and React + Vite on the frontend. The app supports user registration, JWT-based authentication, and per-user account and transaction management.
 
-README last updated: 09/09/2026
+README last updated: 20/09/2026
 
 ## Overview
 
@@ -15,11 +15,9 @@ This project is still under development and should be treated as an incomplete p
 - Basic create/list/delete support for user-owned transactions
 - PostgreSQL-ready backend configuration
 
-Important: transaction handling is still incomplete. At the moment, transactions can be created and deleted, but there is no transaction update flow, and creating a transaction does not currently modify the related account balance.
-
 ## Demo
 
-[Watch the demo video](https://drive.google.com/file/d/184DXvN9FL9ZS4LGb7Xh0lu2lrb-FYBy2/view?usp=sharing)
+[Watch the demo video](https://drive.google.com/file/d/1igMRVf7RDAfP6xyxwHDPA0H9Ga5TvFMT/view?usp=sharing)
 
 ## Tech Stack
 
@@ -71,22 +69,17 @@ Budgeting/
 - Transaction listing and creation
 - Transaction deletion restricted to the logged-in user
 - Frontend routing between login, register, home, and protected pages
-- Account balances are currently stored as static values and are not recalculated from transactions
 
 ## Planned / Incomplete Areas
 
 This project is not yet complete. Some areas that may still need work include:
 
-- Full transaction update support
-- Automatically syncing transaction entries to account balances
 - Budget calculations and summaries
 - Better validation and error handling
 - UI polish and additional features
 - Production security hardening
 - Automated tests and CI/CD
 - Deployment configuration
-
-A major missing feature is the transaction-to-account balance logic: the app currently records transactions, but it does not yet apply them to the balance of the relevant account.
 
 ## Backend Setup
 
@@ -188,7 +181,7 @@ The backend exposes the following core routes:
 - `POST /api/transactions/` - Create a transaction
 - `DELETE /api/transactions/delete/<id>/` - Delete a transaction
 
-Note: there is currently no `PUT` or `PATCH` endpoint for transaction updates, and transaction creation does not automatically adjust an account’s balance.
+Note: there is currently no `PUT` or `PATCH` endpoint for transaction updates.
 
 All account and transaction endpoints require authentication.
 
@@ -198,7 +191,6 @@ All account and transaction endpoints require authentication.
 - The secret key is hardcoded in the Django settings and should not be used in production.
 - CORS is enabled for local development, which allows the frontend to talk to the backend during development.
 - The app is structured around per-user data isolation, so each user sees only their own accounts and transactions.
-- Transactions are persisted as records, but they do not currently affect the associated account balance logic.
 
 ## License
 
