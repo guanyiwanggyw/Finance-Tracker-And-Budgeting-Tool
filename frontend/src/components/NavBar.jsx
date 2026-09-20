@@ -1,11 +1,18 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import "../styles/NavBar.css";
 
 export default function Navbar() {
   return (
-    <nav className="flex gap-6 p-4 border-b bg-white">
-      <Link to="/home">Home</Link>
-      <Link to="/accounts">Account</Link>
-      <Link to="/transactions">Transaction</Link>
+    <nav className="nav">
+      <NavLink className="nav-list" to="/home">
+        Home
+      </NavLink>
+      <NavLink className="nav-list" to="/accounts">
+        Account
+      </NavLink>
+      <NavLink className="nav-list" to="/transactions">
+        Transaction
+      </NavLink>
     </nav>
   );
 }

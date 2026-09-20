@@ -1,0 +1,23 @@
+nav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: #808080;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-list {
+  display: block;
+  color: white;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.nav-list:not(.active) {
+  background-color: #808080;
+}
+
+.nav-list.active {
+  background-color: #000000;
+}
