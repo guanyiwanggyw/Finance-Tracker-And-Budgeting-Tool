@@ -1,33 +1,44 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Transaction from "../transactions/Transaction";
-import api from "../../services/api"; // <-- you must import this
+import api from "../../services/api";
 
-export default function AccountDetails() {
+export default function AccountDetails({ accountVersion }) {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [account, setAccount] = useState(null);
   const [transactions, setTransactions] = useState([]);
 
-  useEffect(() => {
+  // Fetch account details
+  const getAccount = () => {
     const token = localStorage.getItem("access");
 
-    // Fetch account details
     fetch(`http://localhost:8000/api/accounts/${id}/`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
       .then((data) => setAccount(data));
+  };
 
-    // Fetch ALL transactions (you can optimise later)
+  // Fetch all transactions
+  const getTransactions = () => {
+    const token = localStorage.getItem("access");
+
     fetch(`http://localhost:8000/api/transactions/`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
       .then((data) => setTransactions(data));
-  }, [id]);
+  };
 
+  // Load account + transactions
+  useEffect(() => {
+    getAccount();
+    getTransactions();
+  }, [id, accountVersion]);
+
+  // Delete account
   const deleteAccount = () => {
     const token = localStorage.getItem("access");
 
@@ -37,8 +48,7 @@ export default function AccountDetails() {
     }).then(() => navigate("/accounts"));
   };
 
-  const returnPage = () => navigate("/accounts");
-
+  // Delete transaction
   const deleteTransaction = (transactionId) => {
     api
       .delete(`/api/transactions/delete/${transactionId}/`)
@@ -46,8 +56,11 @@ export default function AccountDetails() {
         if (res.status === 204) {
           alert("Transaction was deleted");
 
-          // Update state instead of calling getTransactions()
+          // Remove from local state
           setTransactions((prev) => prev.filter((t) => t.id !== transactionId));
+
+          // Re-fetch account to update balance
+          getAccount();
         } else {
           alert("Failed to delete transaction!");
         }
@@ -57,6 +70,7 @@ export default function AccountDetails() {
 
   if (!account) return <p>Loading...</p>;
 
+  // Filter transactions for this account
   const filteredTransactions = transactions.filter(
     (transaction) =>
       transaction.from_account === account.id ||
@@ -66,12 +80,13 @@ export default function AccountDetails() {
   return (
     <div className="">
       <h1>{account.account_name} Details</h1>
+      <h2>Balance £{account.current_balance}</h2>
 
       <button className="delete-button" onClick={deleteAccount}>
         Delete Account
       </button>
 
-      <button className="delete-button" onClick={returnPage}>
+      <button className="delete-button" onClick={() => navigate("/accounts")}>
         Go back to Accounts
       </button>
 
