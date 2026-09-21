@@ -1,9 +1,9 @@
 .transaction-container {
+  display: flex;
   justify-content: left;
   margin: 10px;
   border: 1px solid grey;
   border-radius: 5px;
-  max-width: 200px;
 }
 
 p {

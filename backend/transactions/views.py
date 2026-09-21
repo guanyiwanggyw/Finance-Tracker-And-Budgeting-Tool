@@ -32,3 +32,11 @@ class TransactionDelete(generics.DestroyAPIView):
         """
         user = self.request.user
         return Transaction.objects.filter(account_holder=user)
+
+class TransactionDetail(generics.RetrieveAPIView):
+    serializer_class = TransactionSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Transaction.objects.filter(account_holder=user)

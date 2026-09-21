@@ -4,7 +4,6 @@ import "../../styles/Transaction.css";
 function Transaction({ transaction, onDelete }) {
   return (
     <div className="transaction-container">
-      <p className="transaction-balance">{transaction.date}</p>
       <p className="transaction-balance">{transaction.type}</p>
       <p className="transaction-balance">£{transaction.amount}</p>
       <p className="transaction-balance">Category: {transaction.category}</p>

@@ -9,6 +9,7 @@ import Transaction from "../pages/Transactions";
 import NotFound from "../pages/NotFound";
 import ProtectedRoute from "../components/ProtectedRoute";
 import AccountDetails from "../features/accounts/AccountDetails";
+import TransactionDetails from "../features/transactions/TransactionDetails";
 
 function Logout() {
   clearAuthTokens();
@@ -53,6 +54,7 @@ export default function App() {
           }
         />
         <Route path="/accounts/:id" element={<AccountDetails />} />
+        <Route path="/transactions/:id" element={<TransactionDetails />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
