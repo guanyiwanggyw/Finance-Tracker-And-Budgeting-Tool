@@ -9,21 +9,47 @@ export default function AccountForm({ onAccountCreated }) {
   const [account_name, setAccountName] = useState("");
   const [showForm, setShowForm] = useState(false);
 
-  const createAccount = (e) => {
+  const createAccount = async (e) => {
     e.preventDefault();
 
-    api
-      .post("/api/accounts/", { account_name, opening_balance, opening_date })
-      .then((res) => {
-        if (res.status === 201) {
-          setAccountName("");
-          setOpeningBalance("");
-          setOpeningDate("");
-          setShowForm(false);
-
-          onAccountCreated(); // tell parent to refresh list
-        }
+    try {
+      const accountRes = await api.post("/api/accounts/", {
+        account_name,
       });
+
+      const accountId = accountRes.data.id;
+
+      const numericBalance = Number(opening_balance);
+
+      const payload = {
+        date: opening_date,
+        type: numericBalance < 0 ? "Expense" : "Income",
+        amount: Math.abs(numericBalance),
+        category: "Opening Balance",
+        note: "Opening Transaction",
+      };
+
+      if (numericBalance < 0) {
+        payload.from_account = accountId;
+        payload.to_account_name = "Opening Balance Source";
+      }
+
+      if (numericBalance >= 0) {
+        payload.to_account = accountId;
+        payload.from_account_name = "Opening Balance Source";
+      }
+
+      await api.post("/api/transactions/", payload);
+
+      setAccountName("");
+      setOpeningBalance("");
+      setOpeningDate("");
+      setShowForm(false);
+
+      onAccountCreated();
+    } catch (err) {
+      alert("Failed to create account or opening transaction");
+    }
   };
 
   return (
@@ -44,7 +70,7 @@ export default function AccountForm({ onAccountCreated }) {
 
           <label>Opening Balance:</label>
           <input
-            type="text"
+            type="number"
             required
             value={opening_balance}
             onChange={(e) => setOpeningBalance(e.target.value)}
