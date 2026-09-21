@@ -8,7 +8,7 @@ export default function AccountForm({ onAccountCreated }) {
   const [opening_date, setOpeningDate] = useState("");
   const [account_name, setAccountName] = useState("");
   const [showForm, setShowForm] = useState(false);
-
+  const category = `${account_name} Opening Balance`;
   const createAccount = async (e) => {
     e.preventDefault();
 
@@ -24,8 +24,8 @@ export default function AccountForm({ onAccountCreated }) {
       const payload = {
         date: opening_date,
         type: numericBalance < 0 ? "Expense" : "Income",
+        category,
         amount: Math.abs(numericBalance),
-        category: "Opening Balance",
         note: "Opening Transaction",
       };
 

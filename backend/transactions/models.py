@@ -5,7 +5,7 @@ class Transaction(models.Model):
     date = models.DateField((""), auto_now=False, auto_now_add=False)
     type = models.CharField(max_length=8) 
     amount = models.DecimalField(max_digits=11, decimal_places=2)
-    category = models.CharField(max_length=20) 
+    category = models.CharField(max_length=50) 
     from_account = models.ForeignKey(
         "accounts.Account",
         on_delete=models.PROTECT,
