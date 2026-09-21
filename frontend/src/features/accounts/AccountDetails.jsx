@@ -11,6 +11,15 @@ export default function AccountDetails({ accountVersion }) {
   const [account, setAccount] = useState(null);
   const [transactions, setTransactions] = useState([]);
 
+  const getSign = (account) => {
+    return account.current_balance < 0 ? "-" : "";
+  };
+  const absoluteBalance = (account) => {
+    return account.current_balance < 0
+      ? account.current_balance * -1
+      : account.current_balance;
+  };
+
   // Fetch account details
   const getAccount = () => {
     const token = localStorage.getItem("access");
@@ -81,7 +90,9 @@ export default function AccountDetails({ accountVersion }) {
   return (
     <div className="">
       <h1>{account.account_name} Details</h1>
-      <h2>Balance £{account.current_balance}</h2>
+      <h2>
+        Balance {getSign(account)}£{absoluteBalance(account)}
+      </h2>
 
       <button className="delete-button" onClick={deleteAccount}>
         Delete Account
