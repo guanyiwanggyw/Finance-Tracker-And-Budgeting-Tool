@@ -17,6 +17,7 @@ export default function AccountForm({ onAccountCreated }) {
         account_name,
       });
 
+      onAccountCreated();
       const accountId = accountRes.data.id;
 
       const numericBalance = Number(opening_balance);
@@ -45,8 +46,6 @@ export default function AccountForm({ onAccountCreated }) {
       setOpeningBalance("");
       setOpeningDate("");
       setShowForm(false);
-
-      onAccountCreated();
     } catch (err) {
       alert("Failed to create account or opening transaction");
     }

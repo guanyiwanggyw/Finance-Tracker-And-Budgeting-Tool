@@ -27,11 +27,13 @@ class AccountDelete(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
-        """
-        Overriding function to delete accounts only made by the user
-        """
         user = self.request.user
-        return Account.objects.filter(account_holder=user)
+        return (
+            Account.objects
+            .filter(account_holder=user)
+            .prefetch_related("incoming_transactions", "outgoing_transactions")
+        )
+
 
 class AccountDetail(generics.RetrieveAPIView):
     serializer_class = AccountSerializer
