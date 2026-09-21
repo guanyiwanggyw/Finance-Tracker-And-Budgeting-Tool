@@ -57,7 +57,7 @@ export default function TransactionForm({ accounts, onTransactionsChanged }) {
 
   return (
     <div>
-      <button onClick={() => setShowForm(!showForm)}>
+      <button className="form-button" onClick={() => setShowForm(!showForm)}>
         {showForm ? "Hide Form" : "Add Transaction"}
       </button>
 

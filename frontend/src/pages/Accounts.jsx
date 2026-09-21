@@ -3,6 +3,8 @@ import api from "../services/api";
 import Navbar from "../components/NavBar";
 import AccountList from "../features/accounts/AccountList";
 import AccountForm from "../features/accounts/AccountForm";
+import NetWorth from "../features/accounts/Networth";
+import "../styles/Account.css";
 
 export default function Account() {
   const [accounts, setAccounts] = useState([]);
@@ -21,9 +23,9 @@ export default function Account() {
   return (
     <div className="accounts-page">
       <Navbar />
-
+      <NetWorth />
+      <button className="place-holder">FILTER</button>
       <AccountList accounts={accounts} />
-
       <AccountForm onAccountCreated={getAccounts} />
     </div>
   );

@@ -5,11 +5,16 @@ nav {
   background-color: #808080;
   display: flex;
   justify-content: center;
+  border-radius: 10px;
+  margin: 10px;
 }
 
 .nav-list {
   display: block;
   color: white;
+  font-size: 20px;
+  margin: 10px;
+  border-radius: 10px;
   padding: 14px 16px;
   text-decoration: none;
 }

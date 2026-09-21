@@ -8,8 +8,6 @@ export default function AccountList({ accounts }) {
 
   return (
     <div className="account-list">
-      <h2>Your Accounts</h2>
-
       {internalAccounts.map((account) => (
         <Link
           className="account-link"

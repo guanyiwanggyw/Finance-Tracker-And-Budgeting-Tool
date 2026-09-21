@@ -1,6 +1,7 @@
 import { useState } from "react";
 import api from "../../services/api";
 import "../../styles/Form.css";
+import "../../styles/Account.css";
 
 export default function AccountForm({ onAccountCreated }) {
   const [opening_balance, setOpeningBalance] = useState("");
@@ -27,7 +28,7 @@ export default function AccountForm({ onAccountCreated }) {
 
   return (
     <div>
-      <button onClick={() => setShowForm(!showForm)}>
+      <button className="form-button" onClick={() => setShowForm(!showForm)}>
         {showForm ? "Hide Form" : "Add Account"}
       </button>
 

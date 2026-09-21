@@ -59,7 +59,6 @@ export default function LoginAndRegisterForm({ route, method }) {
       <button className="login-button" type="submit">
         {name}
       </button>
-      <br />
       <p>
         <Link to={linkTo}>{linkText}</Link>
       </p>

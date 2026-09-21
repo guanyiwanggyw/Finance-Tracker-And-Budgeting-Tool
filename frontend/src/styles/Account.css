@@ -1,17 +1,10 @@
 .account-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  flex-direction: column;
   margin: 10px;
   border: 1px solid grey;
   border-radius: 5px;
-  max-width: 100px;
-}
-
-p {
-  padding: 5px;
-  margin: 0px;
 }
 
 .account-container:hover {
@@ -20,17 +13,21 @@ p {
 
 .account-name {
   color: black;
+  float: left;
+  font-size: 30px;
 }
 
-.account-balance {
+.account-current-balance {
   color: #666;
+  float: right;
+  font-size: 30px;
 }
 
 .delete-button {
   background-color: red;
   color: white;
   border: none;
-
+  padding: 5px;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -48,4 +45,32 @@ p {
 
 .account-link:hover {
   text-decoration: none;
+}
+
+.net-worth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid grey;
+  border-radius: 5px;
+  margin: 10px;
+}
+
+.net-worth-content {
+  font-size: 30px;
+}
+
+.place-holder {
+  border-color: black;
+  color: black;
+}
+
+.normal-button {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
 }

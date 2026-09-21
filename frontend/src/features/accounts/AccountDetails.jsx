@@ -86,7 +86,7 @@ export default function AccountDetails({ accountVersion }) {
         Delete Account
       </button>
 
-      <button className="delete-button" onClick={() => navigate("/accounts")}>
+      <button className="return-button" onClick={() => navigate("/accounts")}>
         Go back to Accounts
       </button>
 
