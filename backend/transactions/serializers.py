@@ -151,7 +151,5 @@ class TransactionSerializer(serializers.ModelSerializer):
         return Account.objects.create(
             account_name=name,
             account_type="External",
-            opening_balance=0,
-            opening_date=timezone.localdate(),
             account_holder=user,
         )
