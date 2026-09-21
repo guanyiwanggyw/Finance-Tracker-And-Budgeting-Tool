@@ -1,244 +1,163 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import api from "../../services/api";
-import Transaction from "./Transaction";
-import Account from "../accounts/Account";
 import "../../styles/Form.css";
 
-const getErrorMessage = (error) => {
-  const data = error.response?.data;
-
-  if (!data) return "Request failed. Please try again.";
-  if (typeof data === "string") return data;
-  if (data.detail) return data.detail;
-
-  return Object.values(data).flat().join(" ");
-};
-
-function TransactionForm({
-  accountsVersion,
-  transactionsVersion,
-  onTransactionsChanged,
-}) {
-  const [transactions, setTransactions] = useState([]);
+export default function TransactionForm({ accounts, onTransactionsChanged }) {
+  const [showForm, setShowForm] = useState(false);
   const [date, setDate] = useState("");
   const [type, setType] = useState("");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
-  const [from_account, setFromAccount] = useState("");
-  const [to_account, setToAccount] = useState("");
+  const [fromAccount, setFromAccount] = useState("");
+  const [toAccount, setToAccount] = useState("");
   const [note, setNote] = useState("");
-  const [accounts, setAccounts] = useState([]);
-  const navigate = useNavigate();
-  const payload = {
-    date,
-    type,
-    amount,
-    category,
-    note,
-  };
 
-  // The API uses account IDs for internal accounts and names for external parties.
-  if (type === "Expense") {
-    payload.from_account = from_account;
-    payload.to_account_name = to_account;
-  }
-
-  if (type === "Income") {
-    payload.from_account_name = from_account;
-    payload.to_account = to_account;
-  }
-
-  if (type === "Transfer") {
-    payload.from_account = from_account;
-    payload.to_account = to_account;
-  }
-
-  // Refresh both lists because transactions affect account balances.
-  useEffect(() => {
-    getAccounts();
-    getTransactions();
-  }, [accountsVersion, transactionsVersion]);
-
-  const getAccounts = () => {
-    api
-      .get("/api/accounts/")
-      .then((res) => setAccounts(res.data))
-      .catch((err) => alert(getErrorMessage(err)));
-  };
-
-  const getTransactions = () => {
-    api
-      .get("/api/transactions/")
-      .then((res) => res.data)
-      .then((data) => {
-        (setTransactions(data), console.log(data));
-      })
-      .catch((err) => alert(getErrorMessage(err)));
-  };
-
-  const deleteTransaction = (id) => {
-    api
-      .delete(`/api/transactions/delete/${id}/`)
-      .then((res) => {
-        if (res.status === 204) alert("Transaction was deleted");
-        else alert("Failed to delete transaction!");
-        getTransactions();
-        if (res.status === 204) onTransactionsChanged?.();
-      })
-      .catch((err) => alert(getErrorMessage(err)));
-  };
-
-  const createTransaction = (e) => {
+  const createTransaction = async (e) => {
     e.preventDefault();
-    api
-      .post("/api/transactions/", payload)
-      .then((res) => {
-        if (res.status === 201) {
-          setDate("");
-          setType("");
-          setAmount("");
-          setCategory("");
-          setFromAccount("");
-          setToAccount("");
-          setNote("");
-          onTransactionsChanged?.();
-        } else alert("Failed to add account");
-        getTransactions();
-      })
-      .catch((err) => alert(getErrorMessage(err)));
+
+    const payload = { date, type, amount, category, note };
+
+    if (type === "Expense") {
+      payload.from_account = fromAccount;
+      payload.to_account_name = toAccount;
+    }
+
+    if (type === "Income") {
+      payload.from_account_name = fromAccount;
+      payload.to_account = toAccount;
+    }
+
+    if (type === "Transfer") {
+      payload.from_account = fromAccount;
+      payload.to_account = toAccount;
+    }
+
+    try {
+      const res = await api.post("/api/transactions/", payload);
+
+      if (res.status === 201) {
+        setDate("");
+        setType("");
+        setAmount("");
+        setCategory("");
+        setFromAccount("");
+        setToAccount("");
+        setNote("");
+
+        onTransactionsChanged?.();
+      }
+    } catch {
+      alert("Failed to add transaction");
+    }
   };
 
-  const getAccountOptions = (accounts, type) => {
-    return accounts
-      .filter((account) => account.account_type === type)
-      .map((account) => (
-        <option key={account.id} value={account.id}>
-          {account.account_name}
-        </option>
-      ));
-  };
+  const internalAccounts = accounts.filter(
+    (acc) => acc.account_type === "Internal",
+  );
 
   return (
-    <div class="account-container">
-      <div>
-        <h2>Transactions</h2>
-        {transactions.map((transaction) => (
-          <Transaction
-            transaction={transaction}
-            onDelete={deleteTransaction}
-            key={transaction.id}
-          />
-        ))}
-      </div>
-      <br />
-      <h2>Add a transaction</h2>
-      <form onSubmit={createTransaction}>
-        <label htmlFor="date">Date:</label>
-        <br />
-        <input
-          type="date"
-          id="date"
-          required
-          onChange={(e) => setDate(e.target.value)}
-          value={date}
-        />
-        <label htmlFor="type">Type:</label>
-        <br />
-        <select
-          className="form-select"
-          name="type"
-          id="type"
-          required
-          value={type}
-          onChange={(e) => setType(e.target.value)}
-        >
-          <option value="">Select a type</option>
-          <option value="Income">Income</option>
-          <option value="Expense">Expense</option>
-          <option value="Transfer">Transfer</option>
-        </select>
-        <br />
-        <label htmlFor="amount">Amount:</label>
-        <br />
-        <input
-          type="text"
-          inputMode="numeric"
-          pattern="^\d*(\.\d{0,2})?$"
-          id="amount"
-          required
-          onChange={(e) => setAmount(e.target.value)}
-          value={amount}
-        />
-        <label htmlFor="category">Category:</label>
-        <br />
-        <input
-          type="text"
-          id="category"
-          required
-          onChange={(e) => setCategory(e.target.value)}
-          value={category}
-        />
-        <label htmlFor="from_account">Sent from:</label>
-        <br />
+    <div>
+      <button onClick={() => setShowForm(!showForm)}>
+        {showForm ? "Hide Form" : "Add Transaction"}
+      </button>
 
-        {type === "Expense" || type === "Transfer" ? (
+      {showForm && (
+        <form onSubmit={createTransaction} className="form-container">
+          <label>Date</label>
+          <input
+            type="date"
+            required
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
+
+          <label>Type</label>
           <select
             className="form-select"
-            id="from_account"
             required
-            value={from_account}
-            onChange={(e) => setFromAccount(e.target.value)}
+            value={type}
+            onChange={(e) => setType(e.target.value)}
           >
-            <option value="">Select an account</option>
-            {getAccountOptions(accounts, "Internal")}
+            <option value="">Select a type</option>
+            <option value="Income">Income</option>
+            <option value="Expense">Expense</option>
+            <option value="Transfer">Transfer</option>
           </select>
-        ) : (
+
+          <label>Amount</label>
           <input
             type="text"
-            id="from_account"
+            inputMode="numeric"
+            pattern="^\d*(\.\d{0,2})?$"
             required
-            onChange={(e) => setFromAccount(e.target.value)}
-            value={from_account}
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
           />
-        )}
 
-        <label htmlFor="to_account">Sent to:</label>
-        <br />
-        {type === "Income" || type === "Transfer" ? (
-          <select
-            className="form-select"
-            id="to_account"
-            required
-            onChange={(e) => setToAccount(e.target.value)}
-            value={to_account}
-          >
-            <option value="">Select an account</option>
-            {getAccountOptions(accounts, "Internal")}
-          </select>
-        ) : (
+          <label>Category</label>
           <input
             type="text"
-            id="to_account"
-            list="external-accounts"
             required
-            onChange={(e) => setToAccount(e.target.value)}
-            value={to_account}
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
           />
-        )}
 
-        <label htmlFor="note">Note:</label>
-        <br />
-        <textarea
-          type="text"
-          id="note"
-          onChange={(e) => setNote(e.target.value)}
-          value={note}
-        />
-        <input type="submit" value="Submit"></input>
-      </form>
+          <label>Sent from</label>
+          {type === "Expense" || type === "Transfer" ? (
+            <select
+              className="form-select"
+              required
+              value={fromAccount}
+              onChange={(e) => setFromAccount(e.target.value)}
+            >
+              <option value="">Select an account</option>
+              {internalAccounts.map((acc) => (
+                <option key={acc.id} value={acc.id}>
+                  {acc.account_name}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <input
+              type="text"
+              required
+              value={fromAccount}
+              onChange={(e) => setFromAccount(e.target.value)}
+            />
+          )}
+
+          <label>Sent to</label>
+          {type === "Income" || type === "Transfer" ? (
+            <select
+              className="form-select"
+              required
+              value={toAccount}
+              onChange={(e) => setToAccount(e.target.value)}
+            >
+              <option value="">Select an account</option>
+              {internalAccounts.map((acc) => (
+                <option key={acc.id} value={acc.id}>
+                  {acc.account_name}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <input
+              type="text"
+              required
+              value={toAccount}
+              onChange={(e) => setToAccount(e.target.value)}
+            />
+          )}
+
+          <label>Note</label>
+          <textarea value={note} onChange={(e) => setNote(e.target.value)} />
+
+          <button className="form-button" type="submit">
+            Submit
+          </button>
+        </form>
+      )}
     </div>
   );
 }
-
-export default TransactionForm;

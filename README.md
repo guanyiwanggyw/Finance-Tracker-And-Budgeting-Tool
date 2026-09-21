@@ -42,7 +42,7 @@ This project is still under development and should be treated as an incomplete p
 ```text
 Budgeting/
 ├── backend/
-│   ├── accounts/
+│   ├──  transactions/
 │   ├── budgeting/
 │   ├── transactions/
 │   ├── users/

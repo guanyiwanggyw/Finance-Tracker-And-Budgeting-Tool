@@ -1,0 +1,34 @@
+.transaction-container {
+  justify-content: left;
+  margin: 10px;
+  border: 1px solid grey;
+  border-radius: 5px;
+  max-width: 200px;
+}
+
+p {
+  padding: 5px;
+  margin: 0px;
+}
+
+.transaction-container:hover {
+  border: 1px solid blue;
+}
+
+.transaction-balance {
+  color: #666;
+}
+
+.delete-button {
+  background-color: red;
+  color: white;
+  border: none;
+
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.delete-button:hover {
+  background-color: #d32f2f; /* Darker red */
+}

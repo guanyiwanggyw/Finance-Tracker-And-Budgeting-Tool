@@ -5,7 +5,7 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from "../config/constants";
 import LoadingIndicator from "./LoadingIndicator";
 import "../styles/Form.css";
 
-function LoginAndRegisterForm({ route, method }) {
+export default function LoginAndRegisterForm({ route, method }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -39,7 +39,7 @@ function LoginAndRegisterForm({ route, method }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="form-container">
+    <form onSubmit={handleSubmit} className="login-container">
       <h1>{name}</h1>
       <input
         className="form-input"
@@ -56,7 +56,7 @@ function LoginAndRegisterForm({ route, method }) {
         placeholder="Password"
       />
       {loading && <LoadingIndicator />}
-      <button className="form-button" type="submit">
+      <button className="login-button" type="submit">
         {name}
       </button>
       <br />
@@ -66,5 +66,3 @@ function LoginAndRegisterForm({ route, method }) {
     </form>
   );
 }
-
-export default LoginAndRegisterForm;

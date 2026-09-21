@@ -1,45 +1,16 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import api from "../../services/api";
-import Account from "./Account";
 import "../../styles/Form.css";
-import { Link } from "react-router-dom";
 
-function AccountForm({}) {
-  const [accounts, setAccounts] = useState([]);
+export default function AccountForm({ onAccountCreated }) {
   const [opening_balance, setOpeningBalance] = useState("");
   const [opening_date, setOpeningDate] = useState("");
   const [account_name, setAccountName] = useState("");
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    getAccounts();
-  }, []);
-
-  const getAccounts = () => {
-    api
-      .get("/api/accounts/")
-      .then((res) => res.data)
-      .then((data) => {
-        (setAccounts(data), console.log(data));
-      })
-      .catch((err) => alert(err));
-  };
-
-  const deleteAccount = (id) => {
-    api
-      .delete(`/api/accounts/delete/${id}/`)
-      .then((res) => {
-        if (res.status === 204) alert("Account was deleted");
-        else alert("Failed to delete account!");
-        getAccounts();
-        if (res.status === 204);
-      })
-      .catch((err) => alert(err));
-  };
+  const [showForm, setShowForm] = useState(false);
 
   const createAccount = (e) => {
     e.preventDefault();
+
     api
       .post("/api/accounts/", { account_name, opening_balance, opening_date })
       .then((res) => {
@@ -47,68 +18,50 @@ function AccountForm({}) {
           setAccountName("");
           setOpeningBalance("");
           setOpeningDate("");
-        } else alert("Failed to add account");
-        getAccounts();
-      })
-      .catch((err) => alert(err));
-  };
+          setShowForm(false);
 
-  const getInternalAccounts = (accounts) => {
-    return accounts
-      .filter((account) => account.account_type === "Internal")
-      .map((account) => (
-        <Link to={`/accounts/${account.id}`}>
-          <Account
-            account={account}
-            onDelete={deleteAccount}
-            key={account.id}
-          />
-        </Link>
-      ));
+          onAccountCreated(); // tell parent to refresh list
+        }
+      });
   };
 
   return (
     <div>
-      {getInternalAccounts(accounts)}
-      <br />
-      <div>
-        <h2>Add an account</h2>
-        <form onSubmit={createAccount}>
-          <label htmlFor="account-name">Account Name:</label>
-          <br />
+      <button onClick={() => setShowForm(!showForm)}>
+        {showForm ? "Hide Form" : "Add Account"}
+      </button>
+
+      {showForm && (
+        <form onSubmit={createAccount} className="form-container">
+          <label>Account Name:</label>
           <input
             type="text"
-            id="account-name"
             required
-            onChange={(e) => setAccountName(e.target.value)}
             value={account_name}
+            onChange={(e) => setAccountName(e.target.value)}
           />
-          <label htmlFor="account-opening-balance">Opening Balance:</label>
-          <br />
+
+          <label>Opening Balance:</label>
           <input
             type="text"
-            inputMode="numeric"
-            pattern="^\d*(\.\d{0,2})?$"
-            id="opening-balance"
-            step="0.01"
             required
-            onChange={(e) => setOpeningBalance(e.target.value)}
             value={opening_balance}
+            onChange={(e) => setOpeningBalance(e.target.value)}
           />
-          <label htmlFor="account-opening-date">Opening Date:</label>
-          <br />
+
+          <label>Opening Date:</label>
           <input
             type="date"
-            id="opening-date"
             required
-            onChange={(e) => setOpeningDate(e.target.value)}
             value={opening_date}
+            onChange={(e) => setOpeningDate(e.target.value)}
           />
-          <input type="submit" value="Submit"></input>
+
+          <button className="form-button" type="submit">
+            Submit
+          </button>
         </form>
-      </div>
+      )}
     </div>
   );
 }
-
-export default AccountForm;

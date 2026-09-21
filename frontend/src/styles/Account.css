@@ -1,17 +1,25 @@
 .account-container {
-  padding: 10px;
-  margin: 20px 0;
-  border: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 10px;
+  border: 1px solid grey;
   border-radius: 5px;
-  max-width: 500px;
+  max-width: 100px;
+}
+
+p {
+  padding: 5px;
+  margin: 0px;
 }
 
 .account-container:hover {
-  border: 1px solid #fc0404;
+  border: 1px solid blue;
 }
 
 .account-name {
-  color: #333;
+  color: black;
 }
 
 .account-balance {
@@ -19,10 +27,10 @@
 }
 
 .delete-button {
-  background-color: #f44336; /* Red */
+  background-color: red;
   color: white;
   border: none;
-  padding: 10px 20px;
+
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -30,4 +38,14 @@
 
 .delete-button:hover {
   background-color: #d32f2f; /* Darker red */
+}
+
+.account-link {
+  text-decoration: none;
+  color: inherit;
+  display: block; /* keeps the whole container clickable */
+}
+
+.account-link:hover {
+  text-decoration: none;
 }

@@ -8,10 +8,10 @@ export default function Navbar() {
         Home
       </NavLink>
       <NavLink className="nav-list" to="/accounts">
-        Account
+        Accounts
       </NavLink>
       <NavLink className="nav-list" to="/transactions">
-        Transaction
+        Transactions
       </NavLink>
       <NavLink className="nav-list" to="/logout">
         Logout

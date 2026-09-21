@@ -1,16 +1,18 @@
-import React from "react";
 import "../../styles/Account.css";
+import "../../styles/Transaction.css";
 
 function Transaction({ transaction, onDelete }) {
   return (
-    <div className="account-container">
-      <p className="account-name">{transaction.date}</p>
-      <p className="account-balance">{transaction.type}</p>
-      <p className="account-balance">£{transaction.amount}</p>
-      <p className="account-balance">Category: {transaction.category}</p>
-      <p className="account-balance">From: {transaction.from_account_name}</p>
-      <p className="account-balance">To: {transaction.to_account_name}</p>
-      <p className="account-balance">Note: {transaction.note}</p>
+    <div className="transaction-container">
+      <p className="transaction-balance">{transaction.date}</p>
+      <p className="transaction-balance">{transaction.type}</p>
+      <p className="transaction-balance">£{transaction.amount}</p>
+      <p className="transaction-balance">Category: {transaction.category}</p>
+      <p className="transaction-balance">
+        From: {transaction.from_account_name}
+      </p>
+      <p className="transaction-balance">To: {transaction.to_account_name}</p>
+      <p className="transaction-balance">Note: {transaction.note}</p>
 
       <button
         className="delete-button"
