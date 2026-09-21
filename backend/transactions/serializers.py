@@ -1,4 +1,3 @@
-from django.utils import timezone
 from rest_framework import serializers
 from accounts.models import Account
 from .models import Transaction
@@ -37,22 +36,23 @@ class TransactionSerializer(serializers.ModelSerializer):
         }
 
     def to_representation(self, instance):
-        """Expose account names alongside their foreign-key IDs in API responses."""
         data = super().to_representation(instance)
 
-        data["from_account_name"] = (
-            instance.from_account.account_name
-            if instance.from_account
-            else None
-        )
+        # If linked to internal account, show its name
+        if instance.from_account:
+            data["from_account_name"] = instance.from_account.account_name
 
-        data["to_account_name"] = (
-            instance.to_account.account_name
-            if instance.to_account
-            else None
-        )
+        # Otherwise show the stored external name
+        else:
+            data["from_account_name"] = instance.from_account_name
+
+        if instance.to_account:
+            data["to_account_name"] = instance.to_account.account_name
+        else:
+            data["to_account_name"] = instance.to_account_name
 
         return data
+
 
     def validate(self, attrs):
         """Apply transaction-specific account rules before creating the record."""
