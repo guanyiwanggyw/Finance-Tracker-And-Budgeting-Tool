@@ -40,7 +40,12 @@ export default function TransactionDetails() {
   return (
     <div className="">
       <h1>{transaction.id} Details</h1>
-      <h2>Amount £{transaction.amount}</h2>
+      <h2>Amount: £{transaction.amount}</h2>
+      <h2>Category: {transaction.category}</h2>
+      <h2>Type: {transaction.type}</h2>
+      <h2>From: {transaction.from_account_name}</h2>
+      <h2>To {transaction.to_account_name}</h2>
+      <h2>Note: {transaction.note}</h2>
 
       <button className="delete-button" onClick={deleteTransaction}>
         Delete Transaction

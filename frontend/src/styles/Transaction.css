@@ -1,22 +1,19 @@
 .transaction-container {
   display: flex;
-  justify-content: left;
-  margin: 10px;
+  justify-content: space-between;
+  align-items: center;
   border: 1px solid grey;
   border-radius: 5px;
-}
-
-p {
-  padding: 5px;
-  margin: 0px;
 }
 
 .transaction-container:hover {
   border: 1px solid blue;
 }
 
-.transaction-balance {
-  color: #666;
+.transaction-content {
+  color: black;
+  font-size: 20px;
+  padding: 10px;
 }
 
 .delete-button {
@@ -31,4 +28,14 @@ p {
 
 .delete-button:hover {
   background-color: #d32f2f; /* Darker red */
+}
+
+.transaction-link {
+  text-decoration: none;
+  color: inherit;
+  display: block; /* keeps the whole container clickable */
+}
+
+.transaction-link:hover {
+  text-decoration: none;
 }

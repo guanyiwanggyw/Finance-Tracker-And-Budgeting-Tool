@@ -11,16 +11,10 @@
   border: 1px solid blue;
 }
 
-.account-name {
+.account-content {
   color: black;
-  float: left;
-  font-size: 30px;
-}
-
-.account-current-balance {
-  color: #666;
-  float: right;
-  font-size: 30px;
+  font-size: 20px;
+  padding: 10px;
 }
 
 .delete-button {

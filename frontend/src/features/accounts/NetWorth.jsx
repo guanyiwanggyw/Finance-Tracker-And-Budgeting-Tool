@@ -6,6 +6,13 @@ export default function NetWorth() {
   const [accounts, setAccounts] = useState([]);
   const [netWorth, setNetWorth] = useState(0);
 
+  const getSign = (netWorth) => {
+    return netWorth < 0 ? "-" : "";
+  };
+  const absoluteBalance = (netWorth) => {
+    return netWorth < 0 ? netWorth * -1 : netWorth;
+  };
+
   useEffect(() => {
     api
       .get("/api/accounts/")
@@ -25,7 +32,9 @@ export default function NetWorth() {
   return (
     <div className="net-worth-container">
       <h1 className="net-worth-content">Net Worth</h1>
-      <h1 className="net-worth-content">£{netWorth}</h1>
+      <h1 className="net-worth-content">
+        {getSign(netWorth)}£{absoluteBalance(netWorth)}
+      </h1>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Transaction from "../transactions/Transaction";
 import api from "../../services/api";
+import { Link } from "react-router-dom";
 
 export default function AccountDetails({ accountVersion }) {
   const { id } = useParams();
@@ -95,11 +96,17 @@ export default function AccountDetails({ accountVersion }) {
       {filteredTransactions.length === 0 && <p>No transactions found.</p>}
 
       {filteredTransactions.map((transaction) => (
-        <Transaction
+        <Link
+          className="transaction-link"
+          to={`/transactions/${transaction.id}`}
           key={transaction.id}
-          transaction={transaction}
-          onDelete={() => deleteTransaction(transaction.id)}
-        />
+        >
+          <Transaction
+            key={transaction.id}
+            transaction={transaction}
+            onDelete={() => deleteTransaction(transaction.id)}
+          />
+        </Link>
       ))}
     </div>
   );
