@@ -13,6 +13,9 @@ export default function Navbar() {
       <NavLink className="nav-list" to="/transactions">
         Transaction
       </NavLink>
+      <NavLink className="nav-list" to="/logout">
+        Logout
+      </NavLink>
     </nav>
   );
 }
