@@ -14,11 +14,6 @@ export default function AccountDetails({ accountVersion }) {
   const getSign = (account) => {
     return account.current_balance < 0 ? "-" : "";
   };
-  const absoluteBalance = (account) => {
-    return account.current_balance < 0
-      ? account.current_balance * -1
-      : account.current_balance;
-  };
 
   // Fetch account details
   const getAccount = () => {
@@ -91,7 +86,7 @@ export default function AccountDetails({ accountVersion }) {
     <div className="">
       <h1>{account.account_name} Details</h1>
       <h2>
-        Balance {getSign(account)}£{absoluteBalance(account)}
+        Balance {getSign(account)}£{Math.abs(account.current_balance)}
       </h2>
 
       <button className="delete-button" onClick={deleteAccount}>

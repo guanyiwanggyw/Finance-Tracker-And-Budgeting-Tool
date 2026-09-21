@@ -9,9 +9,6 @@ export default function NetWorth() {
   const getSign = (netWorth) => {
     return netWorth < 0 ? "-" : "";
   };
-  const absoluteBalance = (netWorth) => {
-    return netWorth < 0 ? netWorth * -1 : netWorth;
-  };
 
   useEffect(() => {
     api
@@ -33,7 +30,7 @@ export default function NetWorth() {
     <div className="net-worth-container">
       <h1 className="net-worth-content">Net Worth</h1>
       <h1 className="net-worth-content">
-        {getSign(netWorth)}£{absoluteBalance(netWorth)}
+        {getSign(netWorth)}£{Math.abs(netWorth)}
       </h1>
     </div>
   );
