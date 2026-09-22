@@ -70,6 +70,7 @@ export default function TransactionForm({ accounts, onTransactionsChanged }) {
             required
             value={date}
             onChange={(e) => setDate(e.target.value)}
+            max={new Date().toISOString().split("T")[0]}
           />
 
           <label>Type</label>

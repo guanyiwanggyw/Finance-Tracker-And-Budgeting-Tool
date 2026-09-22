@@ -84,6 +84,7 @@ export default function AccountForm({ onAccountCreated }) {
             required
             value={opening_date}
             onChange={(e) => setOpeningDate(e.target.value)}
+            max={new Date().toISOString().split("T")[0]}
           />
 
           <button className="form-button" type="submit">
