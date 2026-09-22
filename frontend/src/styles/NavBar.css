@@ -1,18 +1,24 @@
 nav {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+
   display: flex;
   justify-content: center;
   gap: 8px;
 
-  background-color: #f5f5f5; /* soft grey */
+  background-color: #f5f5f5;
   padding: 10px;
 
   border-radius: 10px;
-  margin: 12px;
+  margin: 12px auto;
 
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
 .nav-list {
+  box-sizing: border-box;
+
   display: block;
 
   padding: 12px 18px;

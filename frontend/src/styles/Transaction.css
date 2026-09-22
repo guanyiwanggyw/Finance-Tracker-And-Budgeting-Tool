@@ -25,10 +25,6 @@ body {
   color: var(--color-text);
 }
 
-/* ===========================
-   ACCOUNT ITEM
-   =========================== */
-
 .transaction-container {
   display: flex;
   justify-content: space-between;
@@ -64,27 +60,27 @@ body {
   display: block;
 }
 
-/* ===========================
-   DELETE BUTTON
-   =========================== */
+.transaction-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
-.delete-button {
-  background-color: var(--color-danger);
-  color: white;
+  width: 450px;
+  max-height: 80vh;
+  background: white;
+  z-index: 60;
 
-  border: none;
-  padding: 8px 12px;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
 
-  border-radius: var(--radius-button);
-  cursor: pointer;
-
-  font-size: 14px;
-  transition:
-    background-color var(--transition),
-    transform var(--transition);
+  overflow-y: auto;
 }
 
-.delete-button:hover {
-  background-color: var(--color-danger-hover);
-  transform: scale(1.05);
+.overlay-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 40;
 }
