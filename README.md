@@ -2,7 +2,7 @@
 
 A full-stack budgeting application built with Django REST Framework on the backend and React + Vite on the frontend. The app supports user registration, JWT-based authentication, and per-user account and transaction management.
 
-README last updated: 20/09/2026
+README last updated: 22/09/2026
 
 ## Overview
 
@@ -17,7 +17,7 @@ This project is still under development and should be treated as an incomplete p
 
 ## Demo
 
-[Watch the demo video](https://drive.google.com/file/d/1igMRVf7RDAfP6xyxwHDPA0H9Ga5TvFMT/view?usp=sharing)
+[Watch the demo video](https://drive.google.com/file/d/1kDdMioUCKATw6uTjIBf0hVfyJGmL2HUw/view?usp=sharing)
 
 ## Tech Stack
 
@@ -61,6 +61,8 @@ Budgeting/
 
 ## Features Implemented
 
+- NEW Account details page including related transactions
+- NEW Transaction details page
 - User account creation
 - Login and token retrieval
 - Secure access to authenticated endpoints
