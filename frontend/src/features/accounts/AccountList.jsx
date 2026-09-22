@@ -1,7 +1,6 @@
-import { Link } from "react-router-dom";
 import Account from "./Account";
 
-export default function AccountList({ accounts }) {
+export default function AccountList({ accounts, onSelectAccount }) {
   const internalAccounts = accounts.filter(
     (account) => account.account_type === "Internal",
   );
@@ -9,13 +8,13 @@ export default function AccountList({ accounts }) {
   return (
     <div className="account-list">
       {internalAccounts.map((account) => (
-        <Link
+        <div
           className="account-link"
-          to={`/accounts/${account.id}`}
+          onClick={() => onSelectAccount(account.id)}
           key={account.id}
         >
           <Account account={account} />
-        </Link>
+        </div>
       ))}
     </div>
   );
