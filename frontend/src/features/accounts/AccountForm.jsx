@@ -61,6 +61,7 @@ export default function AccountForm({ onAccountCreated }) {
         <form onSubmit={createAccount} className="form-container">
           <label>Account Name:</label>
           <input
+            className="form-input"
             type="text"
             required
             value={account_name}
@@ -69,6 +70,7 @@ export default function AccountForm({ onAccountCreated }) {
 
           <label>Opening Balance:</label>
           <input
+            className="form-input"
             type="number"
             required
             value={opening_balance}
@@ -77,6 +79,7 @@ export default function AccountForm({ onAccountCreated }) {
 
           <label>Opening Date:</label>
           <input
+            className="form-input"
             type="date"
             required
             value={opening_date}
