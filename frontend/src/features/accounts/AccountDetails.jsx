@@ -2,7 +2,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import TransactionList from "../transactions/TransactionList";
 
-export default function AccountDetails({ id, accountVersion, onClose }) {
+export default function AccountDetails({
+  id,
+  accountVersion,
+  onClose,
+  onAccountDeleted,
+}) {
   const navigate = useNavigate();
 
   const [account, setAccount] = useState(null);
@@ -48,7 +53,21 @@ export default function AccountDetails({ id, accountVersion, onClose }) {
     fetch(`http://localhost:8000/api/accounts/delete/${id}/`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
-    }).then(() => navigate("/accounts"));
+    }).then((res) => {
+      if (res.ok) {
+        alert("Account deleted");
+
+        // Refresh accounts on the parent page
+        if (typeof onAccountDeleted === "function") {
+          onAccountDeleted();
+        }
+
+        // Close the panel immediately
+        onClose();
+      } else {
+        alert("Failed to delete account");
+      }
+    });
   };
 
   if (!account) return <p>Loading...</p>;

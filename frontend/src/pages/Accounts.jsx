@@ -5,7 +5,7 @@ import AccountList from "../features/accounts/AccountList";
 import AccountForm from "../features/accounts/AccountForm";
 import NetWorth from "../features/accounts/NetWorth";
 import "../styles/Account.css";
-import AccountDetailsPanel from "../features/accounts/AccountDetails";
+import AccountDetails from "../features/accounts/AccountDetails";
 
 export default function Account() {
   const [accounts, setAccounts] = useState([]);
@@ -32,10 +32,11 @@ export default function Account() {
       {activeAccount && (
         <>
           <div className="overlay-bg" onClick={() => setActiveAccount(null)} />
-          <AccountDetailsPanel
+          <AccountDetails
             id={activeAccount}
             onClose={() => setActiveAccount(null)}
             onSelectTransaction={setActiveTransaction}
+            onAccountDeleted={getAccounts}
           />
         </>
       )}
