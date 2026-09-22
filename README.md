@@ -17,7 +17,7 @@ This project is still under development and should be treated as an incomplete p
 
 ## Demo
 
-[Watch the demo video](https://drive.google.com/file/d/1kDdMioUCKATw6uTjIBf0hVfyJGmL2HUw/view?usp=sharing)
+[Watch the demo video](https://drive.google.com/file/d/12U7aCzTs5xQteUwtgW0g8fF099130lOX/view?usp=sharing)
 
 ## Tech Stack
 
