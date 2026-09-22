@@ -1,15 +1,13 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Transaction from "../transactions/Transaction";
-import api from "../../services/api";
-import { Link } from "react-router-dom";
+import TransactionList from "../transactions/TransactionList";
 
-export default function AccountDetails({ accountVersion }) {
-  const { id } = useParams();
+export default function AccountDetails({ id, accountVersion, onClose }) {
   const navigate = useNavigate();
 
   const [account, setAccount] = useState(null);
   const [transactions, setTransactions] = useState([]);
+  const [activeTransaction, setActiveTransaction] = useState(null);
 
   const getSign = (account) => {
     return account.current_balance < 0 ? "-" : "";
@@ -53,67 +51,29 @@ export default function AccountDetails({ accountVersion }) {
     }).then(() => navigate("/accounts"));
   };
 
-  // Delete transaction
-  const deleteTransaction = (transactionId) => {
-    api
-      .delete(`/api/transactions/delete/${transactionId}/`)
-      .then((res) => {
-        if (res.status === 204) {
-          alert("Transaction was deleted");
-
-          // Remove from local state
-          setTransactions((prev) => prev.filter((t) => t.id !== transactionId));
-
-          // Re-fetch account to update balance
-          getAccount();
-        } else {
-          alert("Failed to delete transaction!");
-        }
-      })
-      .catch((err) => alert(err));
-  };
-
   if (!account) return <p>Loading...</p>;
 
-  // Filter transactions for this account
-  const filteredTransactions = transactions.filter(
-    (transaction) =>
-      transaction.from_account === account.id ||
-      transaction.to_account === account.id,
-  );
-
   return (
-    <div className="">
-      <h1>{account.account_name} Details</h1>
+    <div className="account-panel">
+      <button className="close-button" onClick={onClose}>
+        ×
+      </button>
+      <h1>{account.account_name}</h1>
       <h2>
-        Balance {getSign(account)}£{Math.abs(account.current_balance)}
+        {getSign(account)}£{Math.abs(account.current_balance)}
       </h2>
-
       <button className="delete-button" onClick={deleteAccount}>
         Delete Account
       </button>
-
-      <button className="return-button" onClick={() => navigate("/accounts")}>
-        Go back to Accounts
-      </button>
-
       <h2>Transactions</h2>
-
-      {filteredTransactions.length === 0 && <p>No transactions found.</p>}
-
-      {filteredTransactions.map((transaction) => (
-        <Link
-          className="transaction-link"
-          to={`/transactions/${transaction.id}`}
-          key={transaction.id}
-        >
-          <Transaction
-            key={transaction.id}
-            transaction={transaction}
-            onDelete={() => deleteTransaction(transaction.id)}
-          />
-        </Link>
-      ))}
+      <TransactionList
+        transactions={transactions}
+        onSelectTransaction={setActiveTransaction}
+        filters={{ account: account.id }}
+        sort="date"
+        order="desc"
+        group="date"
+      />
     </div>
   );
 }

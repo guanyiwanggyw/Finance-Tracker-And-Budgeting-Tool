@@ -1,61 +1,55 @@
-import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Transaction from "../transactions/Transaction";
 import api from "../../services/api";
 
-export default function TransactionDetails() {
-  const { id } = useParams();
-  const navigate = useNavigate();
-
+export default function TransactionDetails({
+  id,
+  onClose,
+  onTransactionDeleted,
+}) {
   const [transaction, setTransaction] = useState(null);
 
-  // Fetch transaction details
-  const getTransaction = () => {
-    const token = localStorage.getItem("access");
+  const deleteTransaction = (transactionId) => {
+    api
+      .delete(`/api/transactions/delete/${transactionId}/`)
+      .then((res) => {
+        if (res.status === 204) {
+          alert("Transaction was deleted");
 
-    fetch(`http://localhost:8000/api/transactions/${id}/`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => res.json())
-      .then((data) => setTransaction(data));
+          // Close panel
+          onTransactionDeleted(transactionId);
+          onClose();
+        } else {
+          alert("Failed to delete transaction!");
+        }
+      })
+      .catch((err) => alert(err));
   };
 
-  // Load account + transactions
   useEffect(() => {
-    getTransaction();
+    api.get(`/api/transactions/${id}/`).then((res) => setTransaction(res.data));
   }, [id]);
 
-  // Delete transactions
-  const deleteTransaction = () => {
-    const token = localStorage.getItem("access");
-
-    fetch(`http://localhost:8000/api/transactions/delete/${id}/`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    }).then(() => navigate("/transactions"));
-  };
-
-  if (!transaction) return <p>Loading...</p>;
+  if (!transaction) return null;
 
   return (
-    <div className="">
-      <h1>{transaction.id} Details</h1>
-      <h2>Amount: £{transaction.amount}</h2>
-      <h2>Category: {transaction.category}</h2>
-      <h2>Type: {transaction.type}</h2>
-      <h2>From: {transaction.from_account_name}</h2>
-      <h2>To {transaction.to_account_name}</h2>
-      <h2>Note: {transaction.note}</h2>
-
-      <button className="delete-button" onClick={deleteTransaction}>
-        Delete Transaction
+    <div className="transaction-panel">
+      <button className="close-button" onClick={onClose}>
+        ×
       </button>
 
+      <h1>Transaction {transaction.id}</h1>
+      <p>Amount: £{transaction.amount}</p>
+      <p>Category: {transaction.category}</p>
+      <p>Type: {transaction.type}</p>
+      <p>From: {transaction.from_account_name}</p>
+      <p>To: {transaction.to_account_name}</p>
+      <p>Note: {transaction.note}</p>
+
       <button
-        className="return-button"
-        onClick={() => navigate("/transactions")}
+        className="delete-button"
+        onClick={() => deleteTransaction(transaction.id)}
       >
-        Go back to Transactions
+        Delete Transaction
       </button>
     </div>
   );
