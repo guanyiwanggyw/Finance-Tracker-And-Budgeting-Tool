@@ -4,10 +4,12 @@ import TransactionList from "../features/transactions/TransactionList";
 import TransactionForm from "../features/transactions/TransactionForm";
 import api from "../services/api";
 import "../styles/Transaction.css";
+import TransactionDetails from "../features/transactions/TransactionDetails";
 
 export default function Transactions() {
   const [transactions, setTransactions] = useState([]);
   const [accounts, setAccounts] = useState([]);
+  const [activeTransaction, setActiveTransaction] = useState(null);
 
   useEffect(() => {
     getTransactions();
@@ -33,12 +35,32 @@ export default function Transactions() {
       <TransactionList
         transactions={transactions}
         onDelete={deleteTransaction}
+        onSelectTransaction={setActiveTransaction}
+        sort="date"
+        order="desc"
+        group="date"
       />
 
       <TransactionForm
         accounts={accounts}
         onTransactionsChanged={getTransactions}
       />
+      {activeTransaction && (
+        <>
+          <div
+            className="overlay-bg"
+            onClick={() => setActiveTransaction(null)}
+          />
+          <TransactionDetails
+            id={activeTransaction}
+            onClose={() => setActiveTransaction(null)}
+            onTransactionDeleted={(deletedId) => {
+              setTransactions((prev) => prev.filter((t) => t.id !== deletedId));
+              getTransactions();
+            }}
+          />
+        </>
+      )}
     </div>
   );
 }
