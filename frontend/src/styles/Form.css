@@ -1,53 +1,96 @@
+:root {
+  --color-border: #e5e7eb; /* light grey */
+  --color-border-hover: #3b82f6; /* blue */
+  --color-text: #111827; /* near-black */
+  --color-bg-card: #ffffff;
+  --color-bg-page: #f9fafb; /* soft grey */
+  --color-primary: #111827; /* black-ish */
+  --color-primary-hover: #000000;
+
+  --radius-card: 10px;
+  --radius-button: 6px;
+
+  --shadow-card: 0 2px 6px rgba(0, 0, 0, 0.06);
+  --transition: 0.2s ease;
+}
+
 .login-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 10px auto;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid grey;
-}
 
-.login-button {
-  width: 100%;
-  padding: 10px;
-  margin: 20px 0;
-  background-color: black;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-}
+  margin: 20px auto;
+  padding: 24px;
 
-.form-input,
-.form-select {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+
   width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+  max-width: 400px;
 }
 
 .form-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   width: 100%;
-  border-radius: 10px;
-  margin: 10px auto;
-  border: 1px solid grey;
+  max-width: 600px;
+
+  margin: 20px auto;
+  padding: 20px;
+
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
 }
 
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 12px;
+
+  margin: 12px 0; /* vertical only */
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-button);
+
+  font-size: 15px;
+  box-sizing: border-box; /* ensures padding stays inside width */
+}
+
+.form-input:focus,
+.form-select:focus {
+  border-color: var(--color-border-hover);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  outline: none;
+}
+
+.login-button,
 .form-button {
   width: 100%;
   padding: 10px;
-  margin: 10px auto;
-  background-color: black;
+
+  margin: 10px 0;
+
+  background-color: var(--color-primary);
   color: white;
+
   border: none;
-  border-radius: 5px;
+  border-radius: var(--radius-button);
   cursor: pointer;
+
+  font-size: 15px;
+  font-weight: 500;
+
+  transition:
+    background-color var(--transition),
+    transform var(--transition);
+}
+
+.login-button:hover,
+.form-button:hover {
+  background-color: var(--color-primary-hover);
+  transform: translateY(-1px);
 }

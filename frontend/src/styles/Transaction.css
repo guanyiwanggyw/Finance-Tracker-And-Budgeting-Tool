@@ -1,41 +1,90 @@
+/* ===========================
+   GLOBAL MINIMALIST THEME
+   =========================== */
+
+:root {
+  --color-border: #e5e7eb; /* light grey */
+  --color-border-hover: #3b82f6; /* blue */
+  --color-text: #111827; /* near-black */
+  --color-bg-card: #ffffff;
+  --color-bg-page: #f9fafb; /* soft grey */
+  --color-danger: #ef4444; /* red */
+  --color-danger-hover: #dc2626;
+
+  --radius-card: 10px;
+  --radius-button: 6px;
+
+  --shadow-card: 0 2px 6px rgba(0, 0, 0, 0.06);
+  --transition: 0.2s ease;
+}
+
+/* Page background */
+body {
+  background: var(--color-bg-page);
+  font-family: system-ui, sans-serif;
+  color: var(--color-text);
+}
+
+/* ===========================
+   ACCOUNT ITEM
+   =========================== */
+
 .transaction-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid grey;
-  border-radius: 5px;
+
+  margin: 12px 0;
+  padding: 16px;
+
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+
+  box-shadow: var(--shadow-card);
+  transition:
+    border-color var(--transition),
+    transform var(--transition);
 }
 
 .transaction-container:hover {
-  border: 1px solid blue;
+  border-color: var(--color-border-hover);
+  transform: translateY(-2px);
 }
 
-.transaction-content {
-  color: black;
-  font-size: 20px;
-  padding: 10px;
+.transactiont-content {
+  font-size: 18px;
+  font-weight: 500;
 }
 
-.delete-button {
-  background-color: red;
-  color: white;
-  border: none;
-
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.delete-button:hover {
-  background-color: #d32f2f; /* Darker red */
-}
-
+/* Make the whole container clickable */
 .transaction-link {
   text-decoration: none;
   color: inherit;
-  display: block; /* keeps the whole container clickable */
+  display: block;
 }
 
-.transaction-link:hover {
-  text-decoration: none;
+/* ===========================
+   DELETE BUTTON
+   =========================== */
+
+.delete-button {
+  background-color: var(--color-danger);
+  color: white;
+
+  border: none;
+  padding: 8px 12px;
+
+  border-radius: var(--radius-button);
+  cursor: pointer;
+
+  font-size: 14px;
+  transition:
+    background-color var(--transition),
+    transform var(--transition);
+}
+
+.delete-button:hover {
+  background-color: var(--color-danger-hover);
+  transform: scale(1.05);
 }

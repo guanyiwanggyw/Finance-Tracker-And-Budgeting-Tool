@@ -1,68 +1,135 @@
-/* Container for the whole page */
-div {
-  font-family: Arial, sans-serif;
+/* ===========================
+   GLOBAL MINIMALIST THEME
+   =========================== */
+
+:root {
+  --color-black: #111111;
+  --color-dark-grey: #1f1f1f;
+  --color-grey: #e5e5e5;
+  --color-light-grey: #f5f5f5;
+  --color-white: #ffffff;
+
+  /* Highlight colour (change this to any accent you want) */
+  --color-highlight: #3b82f6; /* blue */
+  --color-highlight-hover: #2563eb;
+
+  --radius-card: 8px;
+  --radius-button: 5px;
+
+  --shadow-card: 0 2px 6px rgba(0, 0, 0, 0.06);
+  --transition: 0.2s ease;
 }
 
-/* Styles for the notes section */
+/* Global font */
+div {
+  font-family: system-ui, sans-serif;
+  color: var(--color-black);
+}
+
+/* ===========================
+   NOTES SECTION
+   =========================== */
+
 .notes-section {
   margin-bottom: 2rem;
 }
 
 .notes-section h2 {
-  color: #333;
   font-size: 24px;
+  font-weight: 600;
+  color: var(--color-black);
+  margin-bottom: 1rem;
 }
 
-/* Styles for individual notes - assuming your Note component has some container element */
 .note {
-  background-color: #f9f9f9;
-  border-left: 5px solid #007bff;
-  margin: 10px 0;
-  padding: 10px 15px;
-  border-radius: 5px;
+  background-color: var(--color-light-grey);
+  border-left: 4px solid var(--color-highlight);
+
+  margin: 12px 0;
+  padding: 14px 18px;
+
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition);
 }
 
-/* Styles for the form section */
+.note:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
 form {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  max-width: 500px;
+  background-color: var(--color-white);
+  padding: 24px;
+
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-grey);
+  box-shadow: var(--shadow-card);
+
+  max-width: 520px;
   margin: auto;
 }
 
 form h2 {
-  color: #333;
   font-size: 24px;
+  font-weight: 600;
   margin-bottom: 20px;
+  color: var(--color-black);
 }
 
 form label {
-  font-weight: bold;
-  margin-top: 10px;
+  font-weight: 500;
+  margin-top: 12px;
+  display: block;
 }
 
 form input,
 form textarea {
   width: 100%;
-  padding: 8px;
-  margin: 8px 0 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+  padding: 12px;
+
+  margin: 10px 0 18px;
+
+  border: 1px solid var(--color-grey);
+  border-radius: var(--radius-button);
+
+  font-size: 15px;
+  background: var(--color-light-grey);
+
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition);
+}
+
+form input:focus,
+form textarea:focus {
+  border-color: var(--color-highlight);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  outline: none;
 }
 
 form input[type="submit"] {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
+  background-color: var(--color-black);
+  color: var(--color-white);
+
+  padding: 12px 20px;
+
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-button);
   cursor: pointer;
+
   font-size: 16px;
+  font-weight: 500;
+
+  transition:
+    background-color var(--transition),
+    transform var(--transition);
 }
 
 form input[type="submit"]:hover {
-  background-color: #0056b3;
+  background-color: var(--color-dark-grey);
+  transform: translateY(-1px);
 }

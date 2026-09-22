@@ -65,6 +65,7 @@ export default function TransactionForm({ accounts, onTransactionsChanged }) {
         <form onSubmit={createTransaction} className="form-container">
           <label>Date</label>
           <input
+            className="form-input"
             type="date"
             required
             value={date}
@@ -86,6 +87,7 @@ export default function TransactionForm({ accounts, onTransactionsChanged }) {
 
           <label>Amount</label>
           <input
+            className="form-input"
             type="text"
             inputMode="numeric"
             pattern="^\d*(\.\d{0,2})?$"
@@ -96,6 +98,7 @@ export default function TransactionForm({ accounts, onTransactionsChanged }) {
 
           <label>Category</label>
           <input
+            className="form-input"
             type="text"
             required
             value={category}
@@ -119,6 +122,7 @@ export default function TransactionForm({ accounts, onTransactionsChanged }) {
             </select>
           ) : (
             <input
+              className="form-input"
               type="text"
               required
               value={fromAccount}
@@ -143,6 +147,7 @@ export default function TransactionForm({ accounts, onTransactionsChanged }) {
             </select>
           ) : (
             <input
+              className="form-input"
               type="text"
               required
               value={toAccount}
@@ -151,7 +156,11 @@ export default function TransactionForm({ accounts, onTransactionsChanged }) {
           )}
 
           <label>Note</label>
-          <textarea value={note} onChange={(e) => setNote(e.target.value)} />
+          <textarea
+            className="form-input"
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+          />
 
           <button className="form-button" type="submit">
             Submit

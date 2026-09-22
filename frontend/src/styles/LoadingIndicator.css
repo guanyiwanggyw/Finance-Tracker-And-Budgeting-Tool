@@ -4,20 +4,24 @@
   align-items: center;
 }
 
+/* Clean minimalistic spinner */
 .loader {
-  border: 5px solid #f3f3f3; /* Light grey */
-  border-top: 5px solid #3498db; /* Blue */
+  width: 48px;
+  height: 48px;
+
+  border: 4px solid #e5e5e5; /* soft grey */
+  border-top: 4px solid #3b82f6; /* highlight colour */
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  animation: spin 2s linear infinite;
+
+  animation: spin 1s linear infinite;
 }
 
+/* Smooth rotation */
 @keyframes spin {
-  0% {
+  from {
     transform: rotate(0deg);
   }
-  100% {
+  to {
     transform: rotate(360deg);
   }
 }
