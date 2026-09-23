@@ -3,7 +3,7 @@ import "../../styles/Transaction.css";
 
 function Transaction({ transaction }) {
   const getSign = (transaction) => {
-    return transaction.type === "Expense" ? "-" : "";
+    return transaction.type === "Expense" ? "-" : "+";
   };
 
   return (

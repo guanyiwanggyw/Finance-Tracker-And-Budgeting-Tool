@@ -14,7 +14,7 @@ export default function TransactionList({
 
     category: (t, value) => t.category === value,
 
-    type: (t, value) => t.type === value,
+    type: (t, value) => value.includes(t.type),
 
     minAmount: (t, value) => t.amount >= value,
 
@@ -68,7 +68,7 @@ export default function TransactionList({
   return (
     <div className="transaction-list">
       {Object.entries(grouped).map(([date, transactions]) => (
-        <div key={date} className="transaction-date-group">
+        <div key={date} className="transaction-group">
           <h2 className="transaction-date">{date}</h2>
 
           {transactions.map((transaction) => (

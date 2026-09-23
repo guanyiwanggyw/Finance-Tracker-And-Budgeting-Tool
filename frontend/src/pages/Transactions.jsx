@@ -5,6 +5,7 @@ import TransactionForm from "../features/transactions/TransactionForm";
 import api from "../services/api";
 import "../styles/Transaction.css";
 import TransactionDetails from "../features/transactions/TransactionDetails";
+import TransactionsSummary from "../features/transactions/TransactionsSummary.jsx";
 
 export default function Transactions() {
   const [transactions, setTransactions] = useState([]);
@@ -31,12 +32,14 @@ export default function Transactions() {
   return (
     <div className="transaction-page">
       <Navbar />
+      <TransactionsSummary transactions={transactions} />
 
       <TransactionList
         transactions={transactions}
         onDelete={deleteTransaction}
         onSelectTransaction={setActiveTransaction}
-        sort="date"
+        sort="amount"
+        filters={{ type: ["Income", "Expense"] }}
         order="desc"
         group="date"
       />
