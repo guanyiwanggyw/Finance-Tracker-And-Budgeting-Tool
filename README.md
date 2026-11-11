@@ -1,5 +1,7 @@
 # Finance Tracker and Budgeting Tool
 
+> Note: this project is currently on hiatus
+
 A full-stack budgeting application built with Django REST Framework on the backend and React + Vite on the frontend. The app supports user registration, JWT-based authentication, and per-user account and transaction management.
 
 README last updated: 22/09/2026
